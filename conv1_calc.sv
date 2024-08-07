@@ -142,7 +142,7 @@ always @(posedge clk) begin
 genvar a;
 generate
     for (a = 0; a < 32; a = a + 1) begin : filters_0
-        filter filter_a (
+        conv1_filter filter_a (
             .clk(clk),
             .rst_n(rst_n),
             .valid_in(valid_to_mul[0]),
@@ -157,7 +157,7 @@ endgenerate
 genvar b;
 generate
     for (b = 0; b < 32; b = b + 1) begin : filters_1
-        filter filter_b (
+        conv1_filter filter_b (
             .clk(clk),
             .rst_n(rst_n),
             .valid_in(valid_to_mul[1]),
@@ -172,7 +172,7 @@ endgenerate
 genvar c;
 generate
     for (c = 0; c < 32; c = c + 1) begin : filters_2
-        filter filter_c (
+        conv1_filter filter_c (
             .clk(clk),
             .rst_n(rst_n),
             .valid_in(valid_to_mul[2]),
@@ -187,7 +187,7 @@ endgenerate
 genvar d;
 generate
     for (d = 0; d < 32; d = d + 1) begin : filters_3
-        filter filter_d (
+        conv1_filter filter_d (
             .clk(clk),
             .rst_n(rst_n),
             .valid_in(valid_to_mul[3]),
@@ -202,7 +202,7 @@ endgenerate
 genvar e;
 generate
     for (e = 0; e < 32; e = e + 1) begin : filters_4
-        filter filter_e (
+        conv1_filter filter_e (
             .clk(clk),
             .rst_n(rst_n),
             .valid_in(valid_to_mul[4]),
@@ -217,7 +217,7 @@ endgenerate
 genvar f;
 generate
     for (f = 0; f < 32; f = f + 1) begin : filters_5
-        filter filter_f (
+        conv1_filter filter_f (
             .clk(clk),
             .rst_n(rst_n),
             .valid_in(valid_to_mul[5]),
@@ -232,7 +232,7 @@ endgenerate
 genvar g;
 generate
     for (g = 0; g < 32; g = g + 1) begin : filters_6
-        filter filter_g (
+        conv1_filter filter_g (
             .clk(clk),
             .rst_n(rst_n),
             .valid_in(valid_to_mul[6]),
@@ -247,7 +247,7 @@ endgenerate
 genvar h;
 generate
     for (h = 0; h < 32; h = h + 1) begin : filters_7
-        filter filter_h (
+        conv1_filter filter_h (
             .clk(clk),
             .rst_n(rst_n),
             .valid_in(valid_to_mul[7]),
