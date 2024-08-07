@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module filter ( 
+module conv1_filter ( 
    input clk,
    input rst_n,
    input valid_in,
