@@ -2,7 +2,7 @@
 module conv1_layer(
     input clk,
     input rst_n,
-    input [32:0] data_in,
+    input [31:0] data_in,
     input valid_in,
     output [31:0] conv1_out[0:31], // 31 <= filter_num
     output valid_out
