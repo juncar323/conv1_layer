@@ -25,6 +25,7 @@ reg [31:0] data_in_4 [0:8];
 reg [31:0] data_in_5 [0:8];
 reg [31:0] data_in_6 [0:8];
 reg [31:0] data_in_7 [0:8];
+reg [31:0] data_in_8 [0:8];
 
 wire [31:0] filters_out_0 [0 : filter_num - 1];
 wire [31:0] filters_out_1 [0 : filter_num - 1];
@@ -34,13 +35,14 @@ wire [31:0] filters_out_4 [0 : filter_num - 1];
 wire [31:0] filters_out_5 [0 : filter_num - 1];
 wire [31:0] filters_out_6 [0 : filter_num - 1];
 wire [31:0] filters_out_7 [0 : filter_num - 1];
+wire [31:0] filters_out_8 [0 : filter_num - 1];
 
-reg valid_delay[0:8];
-reg valid_to_mul[0:7]; 
+reg valid_delay[0:9];
+reg valid_to_mul[0:8]; 
 reg [3:0] mux_cnt;
  always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
-       mux_cnt <= 0;
+       mux_cnt <= -1;
        valid_delay[0] <= 0;
        valid_delay[1] <= 0;
        valid_delay[2] <= 0;
@@ -50,6 +52,7 @@ reg [3:0] mux_cnt;
        valid_delay[6] <= 0;
        valid_delay[7] <= 0;
        valid_delay[8] <= 0;
+       valid_delay[9] <= 0;
        valid_to_mul[0] <= 1'b0;
        valid_to_mul[1] <= 1'b0;
        valid_to_mul[2] <= 1'b0;
@@ -58,66 +61,72 @@ reg [3:0] mux_cnt;
        valid_to_mul[5] <= 1'b0;
        valid_to_mul[6] <= 1'b0;
        valid_to_mul[7] <= 1'b0;
+       valid_to_mul[8] <= 1'b0;
     end else if (valid_in == 1) begin
-       if (mux_cnt == 3'b111) begin
+       if (mux_cnt == 4'b1000) begin
           mux_cnt <= 0;
-          data_in_7 <= data_out;
-          conv1_out <= filters_out_7;
-          valid_to_mul[7] <= 1'b1; 
+          data_in_8 <= data_out;
+          conv1_out <= filters_out_8;
+          valid_to_mul[8] <= 1'b1; 
        end else begin
           mux_cnt <= mux_cnt + 1;
           case(mux_cnt)
-          3'b000 : data_in_0 <= data_out;
-          3'b001 : data_in_1 <= data_out;
-          3'b010 : data_in_2 <= data_out;
-          3'b011 : data_in_3 <= data_out;
-          3'b100 : data_in_4 <= data_out;
-          3'b101 : data_in_5 <= data_out;
-          3'b110 : data_in_6 <= data_out;
+          4'b0000 : data_in_0 <= data_out;
+          4'b0001 : data_in_1 <= data_out;
+          4'b0010 : data_in_2 <= data_out;
+          4'b0011 : data_in_3 <= data_out;
+          4'b0100 : data_in_4 <= data_out;
+          4'b0101 : data_in_5 <= data_out;
+          4'b0110 : data_in_6 <= data_out;
+          4'b0111 : data_in_7 <= data_out;
           endcase
           case(mux_cnt)
-          3'b000 : conv1_out <= filters_out_0;
-          3'b001 : conv1_out <= filters_out_1;
-          3'b010 : conv1_out <= filters_out_2;
-          3'b011 : conv1_out <= filters_out_3;
-          3'b100 : conv1_out <= filters_out_4;
-          3'b101 : conv1_out <= filters_out_5;
-          3'b110 : conv1_out <= filters_out_6;
+          4'b0000 : conv1_out <= filters_out_0;
+          4'b0001 : conv1_out <= filters_out_1;
+          4'b0010 : conv1_out <= filters_out_2;
+          4'b0011 : conv1_out <= filters_out_3;
+          4'b0100 : conv1_out <= filters_out_4;
+          4'b0101 : conv1_out <= filters_out_5;
+          4'b0110 : conv1_out <= filters_out_6;
+          4'b0111 : conv1_out <= filters_out_7;
           endcase
           case(mux_cnt)
-          3'b000 : valid_to_mul[0] <= 1'b1;
-          3'b001 : valid_to_mul[1] <= 1'b1;
-          3'b010 : valid_to_mul[2] <= 1'b1;
-          3'b011 : valid_to_mul[3] <= 1'b1;
-          3'b100 : valid_to_mul[4] <= 1'b1;
-          3'b101 : valid_to_mul[5] <= 1'b1;
-          3'b110 : valid_to_mul[6] <= 1'b1;
+          4'b0000 : valid_to_mul[0] <= 1'b1;
+          4'b0001 : valid_to_mul[1] <= 1'b1;
+          4'b0010 : valid_to_mul[2] <= 1'b1;
+          4'b0011 : valid_to_mul[3] <= 1'b1;
+          4'b0100 : valid_to_mul[4] <= 1'b1;
+          4'b0101 : valid_to_mul[5] <= 1'b1;
+          4'b0110 : valid_to_mul[6] <= 1'b1;
+          4'b0111 : valid_to_mul[7] <= 1'b1;
           endcase
           end
        end else if (valid_in == 0) begin
-         if (mux_cnt == 3'b111) begin
+         if (mux_cnt == 4'b1000) begin
           mux_cnt <= 0;
-          conv1_out <= filters_out_7;
-          valid_to_mul[7] <= 1'b0; 
+          conv1_out <= filters_out_8;
+          valid_to_mul[8] <= 1'b0; 
        end else begin
           mux_cnt <= mux_cnt + 1;
           case(mux_cnt)
-          3'b000 : conv1_out <= filters_out_0;
-          3'b001 : conv1_out <= filters_out_1;
-          3'b010 : conv1_out <= filters_out_2;
-          3'b011 : conv1_out <= filters_out_3;
-          3'b100 : conv1_out <= filters_out_4;
-          3'b101 : conv1_out <= filters_out_5;
-          3'b110 : conv1_out <= filters_out_6;
+          4'b0000 : conv1_out <= filters_out_0;
+          4'b0001 : conv1_out <= filters_out_1;
+          4'b0010 : conv1_out <= filters_out_2;
+          4'b0011 : conv1_out <= filters_out_3;
+          4'b0100 : conv1_out <= filters_out_4;
+          4'b0101 : conv1_out <= filters_out_5;
+          4'b0110 : conv1_out <= filters_out_6;
+          4'b0111 : conv1_out <= filters_out_7;
           endcase
           case(mux_cnt)
-          3'b000 : valid_to_mul[0] <= 1'b0;
-          3'b001 : valid_to_mul[1] <= 1'b0;
-          3'b010 : valid_to_mul[2] <= 1'b0;
-          3'b011 : valid_to_mul[3] <= 1'b0;
-          3'b100 : valid_to_mul[4] <= 1'b0;
-          3'b101 : valid_to_mul[5] <= 1'b0;
-          3'b110 : valid_to_mul[6] <= 1'b0;
+          4'b0000 : valid_to_mul[0] <= 1'b0;
+          4'b0001 : valid_to_mul[1] <= 1'b0;
+          4'b0010 : valid_to_mul[2] <= 1'b0;
+          4'b0011 : valid_to_mul[3] <= 1'b0;
+          4'b0100 : valid_to_mul[4] <= 1'b0;
+          4'b0101 : valid_to_mul[5] <= 1'b0;
+          4'b0110 : valid_to_mul[6] <= 1'b0;
+          4'b0111 : valid_to_mul[7] <= 1'b0;
           endcase
           end
    end
@@ -133,9 +142,10 @@ always @(posedge clk) begin
  valid_delay[6] <= valid_delay[5];
  valid_delay[7] <= valid_delay[6];
  valid_delay[8] <= valid_delay[7];
+ valid_delay[9] <= valid_delay[8];
  end
  
- assign valid_conv1 = valid_delay[8];
+ assign valid_conv1 = valid_delay[9];
 
 /*--- Filter Instantiation ---*/
 // --- Filter Instantiation ---
@@ -255,6 +265,21 @@ generate
             .bias(bias[h]),
             .weight(weight[(9*h) : (9*h) + 8]), // weight[9*h:9*h+8]
             .filter_out(filters_out_7[h])
+        );
+    end
+endgenerate
+
+genvar i;
+generate
+    for (i = 0; i < 32; i = i + 1) begin : filters_8
+        conv1_filter filter_i (
+            .clk(clk),
+            .rst_n(rst_n),
+            .valid_in(valid_to_mul[8]),
+            .data_out(data_in_8),
+            .bias(bias[i]),
+            .weight(weight[(9*i) : (9*i) + 8]), // weight[9*h:9*h+8]
+            .filter_out(filters_out_8[i])
         );
     end
 endgenerate
