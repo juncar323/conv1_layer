@@ -18,6 +18,7 @@ reg carry;
 reg [2:0] one_hot;
 reg comp;
 reg [7:0] exp_adjust;
+
 always @(*)
 begin
 
@@ -48,6 +49,7 @@ else
            exp_adjust =  exp_adjust-1'b1;
         end
     end
+
 Sign = A_sign;
 Mantissa = Temp_Mantissa[22:0];
 Exponent = exp_adjust;
